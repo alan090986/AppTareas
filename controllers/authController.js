@@ -54,7 +54,7 @@ export const loginUsuario = async (req, res) => {
     }
 
     // Firmamos el token de forma directa aquí adentro resguardando los datos
-    const token = jwt.sign(
+    /*const token = jwt.sign(
       { id: usuario.id, rol: usuario.rol }, 
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
@@ -67,6 +67,27 @@ export const loginUsuario = async (req, res) => {
         nombre: usuario.nombre, 
         email: usuario.email,
         rol: usuario.rol
+      } 
+    });
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    res.status(500).json({ message: 'Error en el servidor.' });
+  }
+};*/
+
+    const token = jwt.sign(
+      { id: usuario.id, rol_id: usuario.rol_id }, 
+      process.env.JWT_SECRET || 'MueblesVillegasLlaveSecretaFija2026',
+      { expiresIn: '24h' }
+    );
+    
+    res.json({ 
+      token, 
+      usuario: { 
+        id: usuario.id, 
+        nombre: usuario.nombre, 
+        email: usuario.email,
+        rol_id: usuario.rol_id // Sincronizado con tu columna de la base de datos
       } 
     });
   } catch (error) {
